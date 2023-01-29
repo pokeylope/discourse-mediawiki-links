@@ -1,0 +1,4 @@
+en:
+  site_settings:
+    mediawiki_links_enabled: 'Enable Mediawiki link syntax. If you change this, you must rebake all posts with: "rake posts:rebake".'
+    mediawiki_links_base_url: 'Base target URL for Mediawiki links.'

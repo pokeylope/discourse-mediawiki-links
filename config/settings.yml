@@ -1,0 +1,7 @@
+plugins:
+  mediawiki_links_enabled:
+    default: true
+    client: true
+  mediawiki_links_base_url:
+    default: ""
+    client: true
