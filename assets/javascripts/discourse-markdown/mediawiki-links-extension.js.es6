@@ -10,6 +10,8 @@ export function setup(helper) {
         base_url = siteSettings.mediawiki_links_base_url;
     });
 
+    helper.allowList(['a.mediawiki-link']);
+
     helper.registerPlugin(md => {
         if (!base_url) {
             return;
@@ -17,14 +19,12 @@ export function setup(helper) {
         md.core.textPostProcess.ruler.push('mediawiki_links', {
             matcher: /\[\[([^|\]]*)(?:\|([^\]]*))?\]\]/,
             onMatch: function(buffer, matches, state) {
-                console.log(matches);
-                console.log(state);
-                let page_name = matches[1];
+                let page_name = matches[1].trim();
                 let link_text = matches[2] ?? matches[1];
 
-                let a_open = new state.Token('a_open', 'a', 1);
+                let a_open = new state.Token('link_open', 'a', 1);
                 a_open.attrSet('href', base_url + encodeURI(page_name.replaceAll(' ', '_')));
-                console.log(a_open);
+                a_open.attrJoin('class', 'mediawiki-link');
                 buffer.push(a_open);
 
                 if (link_text == "") {
@@ -35,7 +35,7 @@ export function setup(helper) {
                 token.content = link_text;
                 buffer.push(token);
 
-                let a_close = new state.Token('a_close', 'a', -1);
+                let a_close = new state.Token('link_close', 'a', -1);
                 buffer.push(a_close);
             }
         });
